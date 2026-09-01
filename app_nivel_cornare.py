@@ -16,7 +16,6 @@ import requests
 import pandas as pd
 import numpy as np
 import streamlit as st
-import plotly.graph_objects as go
 import urllib3
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -211,27 +210,11 @@ if consultar:
             col5.metric("Nivel máximo", f"{df['nivel'].max():.2f}")
             col6.metric("Índice de calidad", f"{indice_calidad} / 100")
 
-            # --- Gráfico de la serie con outliers marcados (Plotly) ---
+            # --- Gráfico de la serie (solo con librerías nativas de Streamlit) ---
             st.subheader("Serie de nivel")
-            fig = go.Figure()
-            fig.add_trace(go.Scatter(
-                x=df["fecha"], y=df["nivel"],
-                mode="lines", name="Nivel",
-                line=dict(color="#1f77b4"),
-            ))
-            if mask_outliers is not None and mask_outliers.any():
-                df_out = df[mask_outliers]
-                fig.add_trace(go.Scatter(
-                    x=df_out["fecha"], y=df_out["nivel"],
-                    mode="markers", name="Outliers",
-                    marker=dict(color="red", size=8, symbol="x"),
-                ))
-            fig.update_layout(
-                xaxis_title="Fecha", yaxis_title="Nivel",
-                height=420, margin=dict(l=10, r=10, t=30, b=10),
-                legend=dict(orientation="h", yanchor="bottom", y=1.02),
-            )
-            st.plotly_chart(fig, use_container_width=True)
+            st.line_chart(df.set_index("fecha")["nivel"])
+            if n_outliers > 0:
+                st.caption(f"⚠️ Se detectaron **{n_outliers}** posibles outliers — revisa el detalle abajo o la tabla de datos crudos.")
 
             # --- Mapa y foto de la estación ---
             st.subheader("Ubicación de la estación")
@@ -256,6 +239,9 @@ if consultar:
                 st.write(f"- Huecos de reporte detectados: **{huecos}**")
                 st.write(f"- Outliers (IQR + nivel negativo): **{n_outliers}** de {len(df)} lecturas")
                 st.write("El índice combina completitud de la serie (70%) y proporción de datos sin outliers (30%).")
+                if mask_outliers is not None and len(mask_outliers) > 0 and mask_outliers.any():
+                    st.write("**Lecturas marcadas como outlier:**")
+                    st.dataframe(df[mask_outliers][["fecha", "nivel"]], use_container_width=True)
 
             # --- Tabla y descarga ---
             with st.expander("Ver datos crudos"):
