@@ -1,5 +1,5 @@
 """
-App básica de Streamlit — Nivel de ríos/quebradas (CORNARE / MARCO)
+App básica de Streamlit — Nivel de ríos/quebradas San Roque (CORNARE / MARCO)
 --------------------------------------------------------------------
 Cada estudiante debe cambiar, como mínimo, el código de la estación
 en el sidebar. Los valores de fecha y calidad también son ajustables.
@@ -17,11 +17,11 @@ import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 # ------------------------------------------------------------------
-# Coordenadas por defecto (Institución Universitaria Pascual Bravo)
+# Coordenadas San Roque
 # Se usan solo si la API no trae la latitud/longitud de la estación.
 # ------------------------------------------------------------------
-LAT_DEFECTO = 6.2766
-LON_DEFECTO = -75.5901
+LAT_DEFECTO = 6.4862
+LON_DEFECTO = -75.0202
 
 API_BASE_URL = "https://marco.cornare.gov.co/api/v1/estaciones"
 
