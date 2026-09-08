@@ -142,7 +142,7 @@ with col_titulo:
 # Sidebar — parámetros de la consulta (editables por cada estudiante)
 # ------------------------------------------------------------------
 st.sidebar.header("Parámetros de tu consulta")
-nombre_estudiante = st.sidebar.text_input("Nombre del estudiante", "Tu Nombre Aquí")
+nombre_estudiante = st.sidebar.text_input("Nombre del estudiante", "Pedro Mendoza")
 codigo_estacion = st.sidebar.text_input("Código de estación", "29")
 
 st.sidebar.markdown("**Rango rápido**")
